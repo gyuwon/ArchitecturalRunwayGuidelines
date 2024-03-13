@@ -348,7 +348,7 @@ Rel(ft, c, "Depends on")
 
 - **Adapters:** Model이 순수한 코드로 문제 해법을 구현할 수 있도록 기반 코드를 제공한다. 예를 들어 Model에 데이터 영속 장치에 대한 추상화가 정의되었다면 이 추상화의 구현체를 Adapters가 제공한다. Model이 다른 시스템에 의존할 때 의존 대상의 설계에 의해 Model이 훼손되지 않도록 [변질 방지 계층(Anti-Corruption Layer, ACL)](https://learn.microsoft.com/en-us/azure/architecture/patterns/anti-corruption-layer)이 포함될 수도 있다. 
 
-주문을 조회 기능에 Repository 패턴이 적용되면 Model에 `OrderRepository` 인터페이스가 정의되고 `OrderQueryProcessor` 클래스가 `OrderRepository` 인터페이스에 의존해 `Order` 개체를 찾아 `OrderView` 개체로 변환해 반환하는 기능을 구현한다. Adapters는 외부 라이브러리가 제공하는 관계형 데이터베이스 드라이버를 사용해 `OrderRepository` 인터페이스를 구현한다. 이때 Model은 Adapters와 외부 라이브러리 어떤 것에도 의존하지 않기 때문에 적응력이 높아지고 테스트하기 쉬워진다.
+Model과 Adapters의 역할과 관계를 이해하기 위해 주문을 조회하는 기능에 Repository 패턴이 사용된다고 생각해 보자. Model에 `OrderRepository` 인터페이스가 정의되고 `OrderQueryProcessor` 클래스가 `OrderRepository` 인터페이스에 의존해 `Order` 개체를 찾아 `OrderView` 개체로 변환해 반환하는 기능을 구현한다. Adapters는 외부 라이브러리가 제공하는 관계형 데이터베이스 드라이버를 사용해 `OrderRepository` 인터페이스를 구현한다. 이때 Model은 Adapters와 외부 라이브러리 어떤 것에도 의존하지 않기 때문에 적응력이 높아지고 테스트하기 쉬워진다.
 
 ```mermaid
 classDiagram
