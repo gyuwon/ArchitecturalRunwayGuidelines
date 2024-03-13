@@ -562,3 +562,322 @@ root/
 ```
 
 `infrastructure` 디렉터리는 각 소속 영역의 IaC(Infrastructure as Code)를 구현한다.
+
+## 코드 스트림
+
+### 단일 저장소 전략
+
+1. **투명성:** 시스템의 모든 코드가 한 곳에 모여있기 때문에 비즈니스 프로세스 전체를 구현하는 코드를 누구나 빠르게 검색하고 이해할 수 있다. 개발자는 자신의 코드 수정이 야기할 여파를 예측하거나 다른 동료에 의해 작성된 의존 코드를 검사해 오류의 원인을 추적할 수 있게 된다. 예를 들어 자신의 개발 장비에서, 웹 프론트엔드 프로그래머는 서버 내부 구현을 조사할 수 있고 서버 프로그래머는 API 클라이언트의 사용 의도를 파악할 수 있다.
+
+2. **변경 집합의 무결성:** 원자성을 갖는 코드 변경 집합에 비즈니스 가치 제공을 위한 코드 수정과 이 변경에 영향받는 코드의 대응을 함께 담을 수 있다. 개발팀은 변경 집합의 무결성을 통해 코드 스트림을 안전하게 보호할 수 있다.
+
+3. **특정 시점의 전체 시스템 형상 확인:** 전체 시스템의 변경이 하나의 코드 스트림으로 표현되기 때문에 쉽 과거 특정 시점의 코드를 읽고 구동시켜 테스트할 수 있다.
+
+4. **일관된 설계 개선:** 더 나은 설계 정책을 일관되게 적용하기 쉬워진다.
+
+5. **표준화된 규칙 유지:** 권장되는 코드 작성과 코드 저장소 운영, 파이프라인 관리 등의 규칙을 시스템 전체 수준에서 표준화하고 관리할 수 있다. 이를 통해 관리비용이 절감되어 효율적으로 적정 수준의 코드 품질을 유지할 수 있다.
+
+### Fast-Forward 스트림
+
+Git을 사용해 형상을 관리하는 전략은 다양하며 각 전략은 각자의 특징을 갖는다. 코드 스트림인 `main` 브랜치의 코드 변경을 다른 분기의 간섭이 없는 fast-forward 스트림으로 관리하면 코드의 변화가 극도로 단순해지기 때문에 코드의 역사를 이해하기 쉬워진다. 병합 지옥에서 벗어나고 코드 충돌 가능성이 줄어든다. 코드 형상으로 구현되는 시스템의 각 구성요소는 복잡한 의존성 버전 관리 없이 최신 상태를 유지할 수 있다. 새로운 합류한 팀원은 복잡한 브랜칭 전략을 배울 필요 없이 즉시 간단한 작업을 시작하고 완료 후 릴리스할 수 있다.
+
+만약 코드를 쓰는 팀 내 모든 엔지니어가 작고 원자적이고 검증된 코드 변경에 숙련되어 [지속 통합(Continuous Integration)](https://www.notion.so/Continuous-Integration-6da6ddf312614b33a6d36236bb2fb40c?pvs=21) 또는 [Trunk-Based Development](https://trunkbaseddevelopment.com/)를 사용하기 되면 여러가지 효과를 얻을 수 있는데 그 중 하나로 fast-forward 코드 스트림 유지가 자연스러워진다.
+
+#### Fast-Forward 스트림 기반 협업 사례
+
+1. `main` 브랜치에서 `work-1` 브랜치와 `work-2` 브랜치를 분기한다.
+
+    ```mermaid
+    gitGraph
+      commit id: "1-M"
+      commit id: "2-M"
+      branch work-1
+      branch work-2
+    ```
+
+2. `main` 브랜치에 다른 경로에 의해 `3-M` 커밋이 추가된다.
+
+    ```mermaid
+    gitGraph
+      commit id: "1-M"
+      commit id: "2-M"
+      branch work-1
+      branch work-2
+      checkout main
+      commit id: "3-M"
+    ```
+
+3. `work-1` 브랜치에 `4-W` 커밋과 `5-W` 커밋을 추가한다.
+
+    ```mermaid
+    gitGraph
+      commit id: "1-M"
+      commit id: "2-M"
+      branch work-1
+      branch work-2
+      checkout main
+      commit id: "3-M"
+      checkout work-1
+      commit id: "4-W"
+      commit id: "5-W"
+    ```
+
+4. `work-2` 브랜치에 `6-W` 커밋을 추가한다.
+
+    ```mermaid
+    gitGraph
+      commit id: "1-M"
+      commit id: "2-M"
+      branch work-1
+      branch work-2
+      checkout main
+      commit id: "3-M"
+      checkout work-1
+      commit id: "4-W"
+      commit id: "5-W"
+      checkout work-2
+      commit id: "6-W"
+    ```
+
+5. `work-1` 브랜치를 `main` 브랜치에 리베이스한다. 기존 `4-W` 커밋과 `5-W` 커밋은 각각 `4-M` 커밋과 `5-M` 커밋으로 교체된다.
+
+    ```mermaid
+    gitGraph
+      commit id: "1-M"
+      commit id: "2-M"
+      branch work-2
+      checkout main
+      commit id: "3-M"
+      branch work-1
+      checkout work-1
+      commit id: "4-M"
+      commit id: "5-M"
+      checkout work-2
+      commit id: "6-W"
+    ```
+
+6. `work-1` 브랜치를 `main` 브랜치에 fast-forward 병합한다.
+
+    ```mermaid
+    gitGraph
+      commit id: "1-M"
+      commit id: "2-M"
+      branch work-2
+      checkout main
+      commit id: "3-M"
+      commit id: "4-M"
+      commit id: "5-M"
+      branch work-1
+      checkout work-2
+      commit id: "6-W"
+    ```
+
+7. `main` 브랜치에 병합된 `work-1` 브랜치를 삭제한다.
+
+    ```mermaid
+    gitGraph
+      commit id: "1-M"
+      commit id: "2-M"
+      branch work-2
+      checkout main
+      commit id: "3-M"
+      commit id: "4-M"
+      commit id: "5-M"
+      checkout work-2
+      commit id: "6-W"
+    ```
+
+8. `work-2` 브랜치를 `main` 브랜치에 리베이스한다. 기존 `6-W` 커밋은 `6-M` 커밋으로 교체된다.
+
+    ```mermaid
+    gitGraph
+      commit id: "1-M"
+      commit id: "2-M"
+      commit id: "3-M"
+      commit id: "4-M"
+      commit id: "5-M"
+      branch work-2
+      checkout work-2
+      commit id: "6-M"
+    ```
+
+9. `work-2` 브랜치를 `main` 브랜치에 fast-forward 병합한다.
+
+    ```mermaid
+    gitGraph
+      commit id: "1-M"
+      commit id: "2-M"
+      commit id: "3-M"
+      commit id: "4-M"
+      commit id: "5-M"
+      commit id: "6-M"
+      branch work-2
+    ```
+
+10. `main` 브랜치에 병합된 `work-2` 브랜치를 삭제한다.
+
+    ```mermaid
+    gitGraph
+      commit id: "1-M"
+      commit id: "2-M"
+      commit id: "3-M"
+      commit id: "4-M"
+      commit id: "5-M"
+      commit id: "6-M"
+    ```
+
+### 테스트 기법
+
+#### 단위 테스트(Unit Test)
+
+시스템을 구성하는 코드의 일부를 격리시켜 테스트한다. 단위 테스트는 작성 및 실행 비용이 싸고 테스트 결과가 안정적인 반면 성공적인 클라이언트 경험 설명력이 높지 않다.
+
+#### 기능 테스트(Functional Test)
+
+코드를 실행 가능한 형태로 빌드하고 실행환경에 배치한 후 공개된 인터페이스를 통해 클라이언트의 시각에서 테스트한다. 실행환경은 로컬 환경, 테스트 환경, 스테이징 환경, 운영 환경 등이 있다. 기능 테스트는 작성 및 실행 비용이 비싸고 다양한 요인에 의해 테스트 오류([1종 오류](https://gyuwon.github.io/blog/2018/12/19/false-positive-in-software-testing.html)나 2종 오류)가 발생할 가능성이 존재하지만 성공적인 클라이언트 경험 설명력이 높다.
+
+### 지속 통합(Continuous Integration)
+
+지속 통합은 팀의 모든 코더가 짧은 주기로 단일 통합 지점에 안전한 코드를 추가하는 기법이다. 프로그래머는 자신의 로컬 개발 장비에서 코드를 작성하고 동작은 검증한 후 Pull Reques를 통해 동료의 리뷰와 테스트를 거쳐 단일 통합 지점인 코드 스트림에 코드를 추가한다.
+
+Martin Fowler는 [Continuous Integration Certification (martinfowler.com)](https://martinfowler.com/bliki/ContinuousIntegrationCertification.html) 에서 지속 통합 인증 기준으로 다음을 제시했다.
+
+1. Every developer commits at least daily to the shared mainline
+2. Every commit triggers an automated build and test
+3. If build and test fails, it's repaired within ten minutes
+
+참고자료
+
+- [It's not CI, it's just CI Theatre | GoCD Blog](https://www.gocd.org/2017/05/16/its-not-CI-its-CI-theatre.html)
+- [Continuous Integration (martinfowler.com)](https://martinfowler.com/articles/continuousIntegration.html)
+
+```mermaid
+flowchart LR
+
+subgraph w[Working Copy]
+  subgraph l[Local Environment]
+    c[Code]-->lut[Unit Test]
+    lut-->lft[Functional Test]
+  end
+end
+
+lft-->pr[Pull Request]
+
+subgraph i[Integration]
+  pr-->ib[Build]
+  ib-->iut[Unit Test]
+  pr-->cr[Code Review]
+  iut-->td[Deploy]
+  subgraph t[Test Environment]
+    td-->tft[Functional Test]
+  end
+  cr-->prc[Complete]
+  tft-->prc
+end
+
+prc-->m[Mainstream]
+```
+
+### 파이프라인
+
+작업 복사본 코드 형상이 코드 스트림에 병합되면, 즉 코드 스트림에 코드 변경이 추가되면, 변경 내용에 해당하는 조건을 가진 트리거가 파이프라인을 실행시킨다. 일반적으로 시스템의 각 구성요소는 디렉터리로 구분되기 때문에 디렉터리 경로 조건에 의해 트리거가 발동하는 경우가 많다. 각 파이프라인은 [지속 배치(Continuous Deployment)](https://www.notion.so/Continuous-Deployment-d114471c3b4e4ba68c703fbd6cd019e8?pvs=21) 또는 [지속 배달(Continuous Delivery)](https://www.notion.so/Continuous-Delivery-e05cc292b5984e83be3113840f0433a1?pvs=21) 과정을 담는다.
+
+```mermaid
+flowchart LR
+
+subgraph c[Code]
+  wc1[(Working Copy 1)]-->m[(Mainstream)]
+  wc2[(Working Copy 2)]-->m
+  wc3[(Working Copy 3)]-->m
+end
+
+subgraph p[Pipelines]
+  subgraph app1p[App 1 Pipelines]
+    app1ip[Infrastructure Pipeline]
+    app1cp[Code Pipeline]
+  end
+
+  subgraph app2p[App 2 Pipelines]
+    app2ip[Infrastructure Pipeline]
+    app2cp[Code Pipeline]
+  end
+
+  style app1p stroke-dasharray: 5 5
+  style app2p stroke-dasharray: 5 5
+end
+
+m--App 1 Infrastructure Trigger-->app1ip
+m--App 1 Code Trigger-->app1cp
+m--App 2 Infrastructure Trigger-->app2ip
+m--App 2 Code Trigger-->app2cp
+
+subgraph system[System]
+  app1ip-->app1[App 1]
+  app1cp-->app1
+
+  app2ip-->app2[App 2]
+  app2cp-->app2
+end
+```
+
+### 지속 배치(Continuous Deployment)
+
+지속 배치는 단일 통합 지점의 모든 변경을 자동으로 출시한다. 변경된 코드 형상은 빌드되어 아티팩트가 생성되고 아티팩트는 단위 테스트된 후 아티팩트 저장소에 저장된다. 스테이징 환경 배치와 운영 환경 배치에 코드 형상은 다시 빌드되지 않으며 아티팩트 저장소에 저장된 아티팩트가 그대로 사용된다. 스테이징 환경은 내부에서만 접근할 수 있는 운영 환경의 일부다. 스테이징 환경과 운영 환경 배치에는 [Blue-Green 배치](https://docs.aws.amazon.com/whitepapers/latest/overview-deployment-options/bluegreen-deployments.html) 또는 [카나리 배치](https://wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.canary-deployment.en.html) 등의 기법이 사용될 수 있다. 자동화된 테스트 만으로 높은 안정적 작동의 신뢰를 얻을 수 있는 API 응용프로그램에 자주 사용된다.
+
+```mermaid
+flowchart LR
+
+i[Integration]-->pb[Build]
+
+as[(Artifact Store)]
+mut-.->|Artifact|as
+
+subgraph m[Mainstream]
+  pb-->mut[Unit Test]
+  mut-->sd[Deploy]
+  subgraph p[Production Environment]
+    subgraph s[Staging Environment]
+      direction LR
+      sd-->sft[Functional Test]
+    end
+    sft-->pd[Deploy]
+    pd-->pft[Functional Test]
+  end
+  as-.->|Artifact|pd
+  as-.->|Artifact|sd
+end
+
+style s stroke-dasharray: 5 5
+```
+
+### 지속 배달(Continuous Delivery)
+
+지속 배달은 지속 배치와 아주 유사하다. 핵심 차이는 스테이징 환경 검증 이후 운영 환경 배치에 수동 승인 절차가 포함된 점이다. 지속 배달을 사용하면 단일 통합 지점의 모든 변경에 대해 배치 가능한 아티팩트가 준비되지만 이 아티팩트를 고객과의 접점에 배치할 지 여부는 개발팀의 정책에 의해 결정된다. 예를 들어 Product Owner나 QA 엔지니어가 출시를 결정할 수 있다. 자동화된 테스트 만으로는 높은 안정적 작동의 신뢰를 얻을 수 없거나 가치 전달 단위와 코드 변경 단위가 일치하지 않을 때 고객경험을 해칠 수 있는 UI 응용프로그램에 자주 사용된다.
+
+```mermaid
+flowchart LR
+
+i[Integration]-->pb[Build]
+
+as[(Artifact Store)]
+mut-.->|Artifact|as
+
+subgraph m[Mainstream]
+  pb-->mut[Unit Test]
+  mut-->sd[Deploy]
+  subgraph p[Production Environment]
+    subgraph s[Staging Environment]
+      direction LR
+      sd-->sft[Functional Test]
+      sft-->sa[Approve]
+    end
+    sa-->pd[Deploy]
+    pd-->pt[Functional Test]
+  end
+  as-.->|Artifact|pd
+  as-.->|Artifact|sd
+end
+
+style sa fill:#FF0,color:#000
+style s stroke-dasharray: 5 5
+```
