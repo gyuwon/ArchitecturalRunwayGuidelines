@@ -1,3 +1,5 @@
+> [Mermaid](https://mermaid.js.org) 특성상 어두운 테마에서 그림의 가시성이 떨어질 수 있습니다.
+
 ## 고수준 아키텍처 모델
 
 작은 실험과 빠른 프로토타이핑을 위해 설계된 시스템이 덩치가 커지고 요구사항 복잡도가 올라가고 기여하는 엔지니어 수가 늘어나면 기존의 아키텍처는 점점 다양한 비효율과 문제를 일으킨다. 다음 단계로 성장하기 위해 시스템은 보다 구조화되어 관리될 필요가 있다. 이런 상황을 마주하고 있는 팀이 고려해 볼 만한 설계 기법들을 조합한 아키텍처 모델을 설명한다.
@@ -298,7 +300,7 @@ C4Context
 
 	Rel(bc2, es3, "Uses")
 	
-	UpdateLayoutConfig($c4ShapeInRow="1", $c4BoundaryInRow="3")
+	UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
 	
 	UpdateElementStyle(bc1, $bgColor="lightgrey", $borderColor="grey")
 	UpdateElementStyle(bc3, $bgColor="lightgrey", $borderColor="grey")
