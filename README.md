@@ -6,7 +6,9 @@
 
 > [Mermaid](https://mermaid.js.org) 특성상 어두운 테마에서 그림의 가시성이 떨어질 수 있기 때문에 밝은 테마를 권장한다.
 
-## 고수준 아키텍처 모델
+## 진화 단계의 시스템 아키텍처 모델
+
+### 고수준 아키텍처 모델
 
 작은 실험과 빠른 프로토타이핑을 위해 설계된 시스템이 덩치가 커지고 요구사항 복잡도가 올라가고 기여하는 엔지니어 수가 늘어나면 기존의 아키텍처는 점점 다양한 비효율과 문제를 일으킨다. 다음 단계로 성장하기 위해 시스템은 보다 구조화되어 관리될 필요가 있다. 이런 상황을 마주하고 있는 팀이 고려해 볼 만한 설계 기법들을 조합한 아키텍처 모델을 설명한다.
 
@@ -94,7 +96,7 @@ UpdateElementStyle(ls3, $bgColor="grey", $borderColor="grey")
 
 - **Legacy Systems:** 폐기 예정이거나 더이상 외부에 노출되지 않지만 Domain Model 영역 구현에 재활용되는 시스템이 이 영역에 위치한다.
 
-### BFF(Backend for Frontend)
+#### BFF(Backend for Frontend)
 
 특정 UI 응용프로그램을 지원할 목적으로 설계된 API 제공자이다. 핵심 구현은 Domain Model 영역에서 구현되기 때문에 BFF는 게이트웨이의 [Aggregation](https://learn.microsoft.com/en-us/azure/architecture/patterns/gateway-aggregation), [Offloading](https://learn.microsoft.com/en-us/azure/architecture/patterns/gateway-offloading), [Routing](https://learn.microsoft.com/en-us/azure/architecture/patterns/gateway-routing) 기능을 담당한다.
 
@@ -140,7 +142,7 @@ UpdateElementStyle(gw1, $bgColor="lightgrey", $borderColor="grey")
 UpdateElementStyle(bc1, $bgColor="lightgrey", $borderColor="grey")
 ```
 
-### API 게이트웨이
+#### API 게이트웨이
 
 Domain Model 영역에서 구현된 기능을 외부 시스템에 제공하기 위해 공개 API를 제공한다.
 
@@ -184,7 +186,7 @@ UpdateElementStyle(bff2, $bgColor="lightgrey", $borderColor="grey")
 UpdateElementStyle(bc1, $bgColor="lightgrey", $borderColor="grey")
 ```
 
-### Bounded Context 간 의존성
+#### Bounded Context 간 의존성
 
 Bounded Context는 서로 협력해 더 큰 가치를 생산한다. 한 Bounded Context의 모델이 다른 Bounded Context의 모델에 의존할 때 직접 의존하지 않으며 메시지를 통해 정보를 주고받는 형태로 간접 의존한다. 메시지 교환은 추상화된 인터페이스를 통해 동기적으로 이뤄질 수도 있고 메시지 중개자를 통해 비동기적으로 이뤄질 수도 있다.
 
@@ -220,7 +222,7 @@ UpdateElementStyle(fs1, $bgColor="lightgrey", $borderColor="grey")
 
 위 그림에서 Bounded Context 1은 Bounded Context 2에 동기적으로 메시지를 전달하는 반면, Bounded Context 1과 Bounded Context 3은 Message Hub를 통해 비동기적으로 메시지를 주고받으며 협력한다.
 
-### 플랫폼 서비스
+#### 플랫폼 서비스
 
 플랫폼 서비스는 여러 Bounded Context에 의해 재사용되는 기술 집약적 기능을 제공한다. 예를 들어 전역 범위의 유일성을 보장하는 엔터티 식별자를 생성하거나 암호화 기능을 제공할 수 있다.
 
@@ -253,7 +255,7 @@ UpdateElementStyle(bc4, $bgColor="lightgrey", $borderColor="grey")
 UpdateElementStyle(mh, $bgColor="lightgrey", $borderColor="grey")
 ```
 
-### 레거시 시스템 사용
+#### 레거시 시스템 사용
 
 Bounded Context는 직접 비즈니스 도메인의 해법을 제공하는 것이 원칙이지만 현실적인 이유로 인해 해법 구현을 Legacy System에 위임할 수 있다. 예를 들어 Legacy System 자체는 폐기되었지만 포함된 기능 중 일부는 유용하고 재구현 비용이 비싸다면 Bounded Context의 인터페이스 설계에는 배제하되 구현에는 활용하는 것이 실용적일 수 있다.
 
@@ -286,7 +288,7 @@ UpdateElementStyle(bc1, $bgColor="lightgrey", $borderColor="grey")
 UpdateElementStyle(bc2, $bgColor="lightgrey", $borderColor="grey")
 ```
 
-### 외부 서비스 사용
+#### 외부 서비스 사용
 
 시스템을 외부 시스템과 통합하는 방법으로 공개 API 제공할 수도 있지만 반대로 외부 시스템이 제공하는 API를 Bounded Context가 사용할 수도 있다. 이때 Bounded Context의 모델은 외부 시스템에 직접 의존하지 않으며 추상화된 인터페이스를 통해 간접 의존한다.
 
@@ -313,9 +315,9 @@ C4Context
 	UpdateElementStyle(bc4, $bgColor="lightgrey", $borderColor="grey")
 ```
 
-## Bounded Context 구현
+### Bounded Context 구현
 
-### Bounded Context 구성
+#### Bounded Context 구성
 
 **기본 구성**
 
@@ -405,7 +407,7 @@ Rel(a, qm, "Implements")
 Rel(a, el, "Depends on")
 ```
 
-### Bounded Context 호스팅
+#### Bounded Context 호스팅
 
 **단일 Bounded Context 호스팅**
 
@@ -489,7 +491,7 @@ Rel(p, pf, "Uses")
 Rel(p, bc, "Hosts")
 Rel(p, mh, "Listens")
 ```
-## 코드 디렉터리
+### 코드 디렉터리
 
 시스템 아키텍처가 고려된 코드 디렉터리 구조는 아키텍처를 이해하고 관리하는 데 큰 도움이 된다. 예를 들어 쇼핑 서비스 시스템은 아키텍처를 반영해 코드 디렉터리를 아래와 같이 설계할 수 있다.
 
