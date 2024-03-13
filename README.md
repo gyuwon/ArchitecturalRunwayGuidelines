@@ -309,7 +309,7 @@ C4Context
 	UpdateElementStyle(bc4, $bgColor="lightgrey", $borderColor="grey")
 ```
 
-## Bounded Context
+## Bounded Context 구현
 
 ### Bounded Context 구성
 
