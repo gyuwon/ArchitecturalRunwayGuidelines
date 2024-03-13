@@ -409,7 +409,7 @@ Rel(a, el, "Depends on")
 
 **단일 Bounded Context 호스팅**
 
-Bounded Context는 Microservices 패턴에서와 같이 각각 하나의 독립된 호스트 응용프로그램에서 독립적으로 구동될 수 있다. Bounded Context에 독립된 자원을 할당하거나 다른 Bounded Context의 장애로부터 보호할 필요가 있을 때 적합하다.
+Bounded Context는 Microservices 패턴에서와 같이 각각 하나의 독립된 호스트 응용프로그램에서 독립적으로 구동될 수 있다. 특정 Bounded Context에 대해 독립적으로 자원을 할당하고 출시 주기를 관리하거나 다른 Bounded Context의 장애로 인한 효과를 차단해야 할 때 적합하다.
 
 ```mermaid
 C4Context
