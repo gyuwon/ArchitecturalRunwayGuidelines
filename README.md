@@ -357,7 +357,7 @@ DatabaseDriver <-- RelationalOrderRepository
 
 **CQRS(Command and Query Responsibility Segregation)**
 
-Bounded Context의 모델에 CQRS 패턴이 적용되면 단일 모델 구성의 Model 구성요소가 Command Model과 Query Model로 분리된다. Command Model은 도메인 모델의 명령 처리를, Query Model은 도메인 모델의 조회 처리를 표현한다.
+Bounded Context의 모델에 CQRS 패턴이 적용되면 단일 모델 구성의 Model이 Command Model과 Query Model로 분리된다. Command Model은 도메인 모델의 명령 처리를, Query Model은 도메인 모델의 조회 처리를 표현한다.
 
 ```mermaid
 C4Context
