@@ -587,6 +587,8 @@ Git을 사용해 형상을 관리하는 전략은 다양하며 각 전략은 각
 
 #### Fast-Forward 스트림 기반 협업 사례
 
+Fast-Forward 스트림을 사용하는 팀이 협업하는 가상의 사례를 설명한다. 이런 작업은 실제로는 프로그래머가 직접 처리하기 보다 GitHub의 ['Allow rebase merging'](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/configuring-commit-rebasing-for-pull-requests)과 같은 코드 저장소 관리 도구를 이용하는 것이 일반적이다.
+
 1. `main` 브랜치에서 `work-1` 브랜치와 `work-2` 브랜치를 분기한다.
 
     ```mermaid
