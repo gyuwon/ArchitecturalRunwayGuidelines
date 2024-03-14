@@ -463,7 +463,7 @@ Rel(a, bc3, "Hosts")
 
 **다중 호스트 응용프로그램**
 
-하나의 Bounded Context가 둘 이상의 응용프로그램에서 호스팅 될 수 있다. 예를 들어 하나의 Bounded Context가 API 응용프로그램에서 호스팅 되어 동기적으로 요청을 처리하며 동시에 메시지 처리 응용프로그램에서 호스팅 되어 비동기적으로 요청을 처리하는 아키텍처도 가능하다.
+하나의 Bounded Context가 둘 이상의 응용프로그램에서 호스팅될 수 있다. 예를 들어 하나의 Bounded Context가 API 응용프로그램에서 호스팅되어 동기적으로 요청을 처리하며 동시에 메시지 처리 응용프로그램에서 호스팅되어 비동기적으로 요청을 처리하는 아키텍처도 가능하다.
 
 ```mermaid
 C4Context
@@ -563,7 +563,28 @@ root/
     ┗ web/
 ```
 
-`infrastructure` 디렉터리는 각 소속 영역의 IaC(Infrastructure as Code)를 구현한다.
+#### `domain-model` 디렉터리
+
+Domain Model 영역 코드를 담는다.
+
+```text
+domain-model/
+┣ accounting/
+┣ identity/
+┣ inventory/
+┣ orders/
+┃ ┣ api/
+┃ ┗ processor/
+┗ shared-hosts/
+  ┣ api/
+  ┗ processor/
+```
+
+사례에서 `domain-model` 디렉터리는 정산을 담당하는 Accounting Bounded Context, 계정 관리를 담당하는 Identity Bounded Context, 상품 인벤토리를 담당하는 Inventory Bounded Context, 주문 관리를 담당하는 Order Bounded Context의 코드를 담으며 여러 Bounded Context를 호스팅하는 공유 API 호스트 응용프로그램과 공유 메시지 처리 호스트 응용프로그램이 포함된다. Accounting Bounded Context와 Identity Bounded Context, Inventory Bounded Context는 공유 호스트 응용프로그램에서 호스팅되며 Order Bounded Context는 전용 호스트 응용프로그램이 사용된다.
+
+#### `infrastructure` 디렉터리
+
+각 아키텍처 구성요소에 필요한 컴퓨팅 자원을 배치하는 IaC(Infrastructure as Code)를 담는다.
 
 ## 코드 스트림
 
