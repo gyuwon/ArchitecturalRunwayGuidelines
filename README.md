@@ -100,7 +100,7 @@ UpdateElementStyle(ls3, $bgColor="grey", $borderColor="grey")
 
 #### BFF(Backend for Frontend)
 
-특정 UI 응용프로그램을 지원할 목적으로 설계된 API 제공자이다. 핵심 구현은 Domain Model 영역에서 구현되기 때문에 BFF는 게이트웨이의 [Aggregation](https://learn.microsoft.com/en-us/azure/architecture/patterns/gateway-aggregation), [Offloading](https://learn.microsoft.com/en-us/azure/architecture/patterns/gateway-offloading), [Routing](https://learn.microsoft.com/en-us/azure/architecture/patterns/gateway-routing) 기능을 담당한다.
+특정 UI 응용프로그램을 지원할 목적으로 설계된 API 제공자이다. 핵심 논리는 Domain Model 영역에서 구현되기 때문에 BFF는 게이트웨이의 [Aggregation](https://learn.microsoft.com/en-us/azure/architecture/patterns/gateway-aggregation), [Offloading](https://learn.microsoft.com/en-us/azure/architecture/patterns/gateway-offloading), [Routing](https://learn.microsoft.com/en-us/azure/architecture/patterns/gateway-routing) 기능을 담당한다.
 
 참고자료
 
