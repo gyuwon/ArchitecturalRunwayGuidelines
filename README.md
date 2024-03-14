@@ -62,35 +62,6 @@ System(es1, "External System 1")
 System(es2, "External System 2")
 System(es3, "External System 3")
 
-Rel(bc1, bc2, "Uses")
-Rel(bc3, bc2, "Uses")
-Rel(bc3, bc4, "Uses")
-
-Rel(bc1, mh, "Uses")
-Rel(bc3, mh, "Uses")
-
-Rel(bc2, fs1, "Uses")
-Rel(bc3, fs1, "Uses")
-
-Rel(bff1, bc2, "Uses")
-Rel(bff1, bc3, "Uses")
-Rel(bff2, bc4, "Uses")
-
-Rel(gw1, bc2, "Uses")
-Rel(gw1, bc3, "Uses")
-Rel(gw1, bc4, "Uses")
-
-Rel(app1, bff1, "Uses")
-Rel(app2, bff2, "Uses")
-
-Rel(bc3, ls3, "Uses")
-Rel(bc4, ls1, "Uses")
-Rel(bc4, ls2, "Uses")
-
-Rel(es1, gw1, "Uses")
-Rel(es2, gw1, "Uses")
-Rel(bc2, es3, "Uses")
-
 UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
 
 UpdateElementStyle(ls1, $bgColor="grey", $borderColor="grey")
@@ -130,12 +101,12 @@ Enterprise_Boundary(wb, "System") {
   }
 }
 
-Rel(bff1, bc2, "Uses")
-Rel(bff1, bc3, "Uses")
-Rel(bff2, bc4, "Uses")
+Rel(bff1, bc2, "Routes requests to", "HTTP")
+Rel(bff1, bc3, "Routes requests to", "HTTP")
+Rel(bff2, bc4, "Routes requests to", "HTTP")
 
-Rel(app1, bff1, "Uses")
-Rel(app2, bff2, "Uses")
+Rel(app1, bff1, "Makes API calls to", "HTTP")
+Rel(app2, bff2, "Makes API calls to", "HTTP")
 
 UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
 
@@ -173,12 +144,12 @@ Enterprise_Boundary(wb, "System") {
 System(es1, "External System 1")
 System(es2, "External System 2")
 
-Rel(gw1, bc2, "Uses")
-Rel(gw1, bc3, "Uses")
-Rel(gw1, bc4, "Uses")
+Rel(gw1, bc2, "Routes requests to", "HTTP")
+Rel(gw1, bc3, "Routes requests to", "HTTP")
+Rel(gw1, bc4, "Routes requests to", "HTTP")
 
-Rel(es1, gw1, "Uses")
-Rel(es2, gw1, "Uses")
+Rel(es1, gw1, "Makes API calls to", "HTTP")
+Rel(es2, gw1, "Makes API calls to", "HTTP")
 
 UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
 
@@ -210,12 +181,12 @@ Enterprise_Boundary(wb, "System") {
   }
 }
 
-Rel(bc1, bc2, "Uses")
-Rel(bc3, bc2, "Uses")
-Rel(bc3, bc4, "Uses")
+Rel(bc1, bc2, "Sends messages to", "sync")
+Rel(bc3, bc2, "Sends messages to", "sync")
+Rel(bc3, bc4, "Sends messages to", "sync")
 
-Rel(bc1, mh, "Uses")
-Rel(bc3, mh, "Uses")
+Rel(bc1, mh, "Publishes messages to")
+Rel(bc3, mh, "Subscribes")
 
 UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
 
@@ -246,8 +217,8 @@ Enterprise_Boundary(wb, "System") {
   }
 }
 
-Rel(bc2, fs1, "Uses")
-Rel(bc3, fs1, "Uses")
+Rel(bc2, fs1, "Makes API calls to", "HTTP")
+Rel(bc3, fs1, "Makes API calls to", "HTTP")
 
 UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
 
@@ -280,9 +251,9 @@ Enterprise_Boundary(wb, "System") {
   }
 }
 
-Rel(bc3, ls3, "Uses")
-Rel(bc4, ls1, "Uses")
-Rel(bc4, ls2, "Uses")
+Rel(bc3, ls3, "Depends on", "HTTP")
+Rel(bc4, ls1, "Depends on", "HTTP")
+Rel(bc4, ls2, "Depends on", "HTTP")
 
 UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
 
@@ -308,7 +279,7 @@ C4Context
 	}
 	System(es3, "External System 3")
 
-	Rel(bc2, es3, "Uses")
+	Rel(bc2, es3, "Depends on", "HTTP")
 	
 	UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
 	
@@ -430,7 +401,7 @@ Component(f, "API Framework")
 
 UpdateLayoutConfig($c4ShapeInRow="2")
 
-Rel(a, f, "Uses")
+Rel(a, f, "Depends on")
 Rel(a, bc, "Hosts")
 ```
 
@@ -455,7 +426,7 @@ Component(f, "API Framework")
 
 UpdateLayoutConfig($c4ShapeInRow="2")
 
-Rel(a, f, "Uses")
+Rel(a, f, "Depends on")
 Rel(a, bc1, "Hosts")
 Rel(a, bc2, "Hosts")
 Rel(a, bc3, "Hosts")
@@ -487,11 +458,11 @@ ContainerQueue(mh, "Message Hub")
 
 UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
 
-Rel(a, af, "Uses")
+Rel(a, af, "Depends on")
 Rel(a, bc, "Hosts")
-Rel(p, pf, "Uses")
+Rel(p, pf, "Depends on")
 Rel(p, bc, "Hosts")
-Rel(p, mh, "Listens")
+Rel(p, mh, "Subscribes")
 ```
 ### 코드 디렉터리
 
