@@ -748,7 +748,7 @@ Fast-Forward 스트림을 사용하는 팀이 협업하는 가상의 사례를 �
 
 ### 지속 통합(Continuous Integration)
 
-지속 통합은 팀의 모든 코더가 짧은 주기로 단일 통합 지점에 안전한 코드를 추가하는 기법이다. 프로그래머는 자신의 로컬 개발 장비에서 코드를 작성하고 동작은 검증한 후 Pull Reques를 통해 동료의 리뷰와 테스트를 거쳐 단일 통합 지점인 코드 스트림에 코드를 추가한다.
+지속 통합은 팀의 모든 코더가 짧은 주기로 단일 통합 지점에 안전한 코드를 추가하는 기법이다. 프로그래머는 자신의 로컬 개발 장비에서 코드를 작성하고 동작을 검증한 후 Pull Reques를 통해 동료의 리뷰와 테스트를 거쳐 단일 통합 지점인 코드 스트림에 코드를 추가한다.
 
 Martin Fowler는 [Continuous Integration Certification (martinfowler.com)](https://martinfowler.com/bliki/ContinuousIntegrationCertification.html) 에서 지속 통합 인증 기준으로 다음을 제시했다.
 
