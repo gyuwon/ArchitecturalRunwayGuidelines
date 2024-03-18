@@ -390,17 +390,12 @@ Bounded Context는 Microservices 패턴에서와 같이 각각 하나의 독립�
 ```mermaid
 C4Context
 
-Deployment_Node(an, "API App Node") {
-  Container(a, "API App")
-}
-
-System_Boundary(dmb, "Domain Model") {
-  Component(bc, "Bounded Context")
-}
-
 Component(f, "API Framework")
 
-UpdateLayoutConfig($c4ShapeInRow="2")
+System_Boundary(dmb, "Domain Model") {
+  Container(a, "API App")
+  Component(bc, "Bounded Context")
+}
 
 Rel(a, f, "Depends on")
 Rel(a, bc, "Hosts")
@@ -413,19 +408,16 @@ Rel(a, bc, "Hosts")
 ```mermaid
 C4Context
 
-Deployment_Node(an, "API App Node") {
-  Container(a, "API App")
-}
+Component(f, "API Framework")
 
 System_Boundary(dmb, "Domain Model") {
   Component(bc1, "Bounded Context 1")
   Component(bc2, "Bounded Context 2")
   Component(bc3, "Bounded Context 3")
+  Container(a, "API App")
 }
 
-Component(f, "API Framework")
-
-UpdateLayoutConfig($c4ShapeInRow="2")
+UpdateLayoutConfig($c4ShapeInRow="3")
 
 Rel(a, f, "Depends on")
 Rel(a, bc1, "Hosts")
