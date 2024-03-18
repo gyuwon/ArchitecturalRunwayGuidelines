@@ -267,25 +267,26 @@ UpdateElementStyle(bc2, $bgColor="lightgrey", $borderColor="grey")
 
 ```mermaid
 C4Context
-	Enterprise_Boundary(wb, "System") {
-		System_Boundary(sb, "Server") {
-			System_Boundary(dmb, "Domain Model") {
-				Component(bc1, "Bounded Context 1")
-				Component(bc2, "Bounded Context 2")
-				Component(bc3, "Bounded Context 3")
-				Component(bc4, "Bounded Context 4")
-			}
-		}
-	}
-	System(es3, "External System 3")
 
-	Rel(bc2, es3, "Depends on", "HTTP")
-	
-	UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
-	
-	UpdateElementStyle(bc1, $bgColor="lightgrey", $borderColor="grey")
-	UpdateElementStyle(bc3, $bgColor="lightgrey", $borderColor="grey")
-	UpdateElementStyle(bc4, $bgColor="lightgrey", $borderColor="grey")
+Enterprise_Boundary(wb, "System") {
+  System_Boundary(sb, "Server") {
+    System_Boundary(dmb, "Domain Model") {
+      Component(bc1, "Bounded Context 1")
+      Component(bc2, "Bounded Context 2")
+      Component(bc3, "Bounded Context 3")
+      Component(bc4, "Bounded Context 4")
+    }
+  }
+}
+System(es3, "External System 3")
+
+Rel(bc2, es3, "Depends on", "HTTP")
+
+UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
+
+UpdateElementStyle(bc1, $bgColor="lightgrey", $borderColor="grey")
+UpdateElementStyle(bc3, $bgColor="lightgrey", $borderColor="grey")
+UpdateElementStyle(bc4, $bgColor="lightgrey", $borderColor="grey")
 ```
 
 ### Bounded Context 구현
