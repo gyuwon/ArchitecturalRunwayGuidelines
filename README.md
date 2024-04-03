@@ -723,13 +723,13 @@ Fast-Forward 스트림을 사용하는 팀이 협업하는 가상의 사례를 �
 
 ### 테스트 기법
 
-#### 단위 테스트(Unit Test)
+#### 단위 테스트(Unit Testing)
 
 시스템을 구성하는 코드의 일부를 격리시켜 테스트한다. 단위 테스트는 작성 및 실행 비용이 싸고 테스트 결과가 안정적인 반면 성공적인 클라이언트 경험 설명력이 높지 않다.
 
-#### 기능 테스트(Functional Test)
+#### 기능 테스트(Functional Testing)
 
-코드를 실행 가능한 형태로 빌드하고 실행환경에 배치한 후 공개된 인터페이스를 통해 클라이언트의 시각에서 테스트한다. 실행환경은 로컬 환경, 테스트 환경, 스테이징 환경, 운영 환경 등이 있다. 기능 테스트는 작성 및 실행 비용이 비싸고 다양한 요인에 의해 테스트 오류([1종 오류](https://gyuwon.github.io/blog/2018/12/19/false-positive-in-software-testing.html)나 2종 오류)가 발생할 가능성이 존재하지만 성공적인 클라이언트 경험 설명력이 높다.
+코드를 실행 가능한 형태로 빌드하고 실행환경에 배치한 후 공개된 인터페이스를 통해 클라이언트의 시각에서 테스트한다. 실행환경은 로컬 환경, 통합 환경, 테스트 환경, 스테이징 환경, 운영 환경 등이 있다. 기능 테스트는 작성 및 실행 비용이 비싸고 다양한 요인에 의해 테스트 오류([1종 오류](https://gyuwon.github.io/blog/2018/12/19/false-positive-in-software-testing.html)나 2종 오류)가 발생할 가능성이 존재하지만 성공적인 클라이언트 경험 설명력이 높다. 기능 테스트는 자동화 되거나(automated) 수동으로(manual) 실행된다.
 
 ### 지속 통합(Continuous Integration)
 
@@ -751,23 +751,25 @@ flowchart LR
 
 subgraph w[Working Copy]
   subgraph l[Local Environment]
-    c[Code]-->lut[Unit Test]
-    lut-->lft[Functional Test]
+    c[Code]-->lut[Unit Testing]
+    lut-->laft[Automated Functional Testing]
+    lut-->lmft[Manual Functional Testing]
   end
 end
 
-lft-->pr[Pull Request]
+laft-->pr[Pull Request]
+lmft-->pr[Pull Request]
 
 subgraph i[Integration]
   pr-->ib[Build]
-  ib-->iut[Unit Test]
+  ib-->iut[Unit Testing]
   pr-->cr[Code Review]
-  iut-->td[Deploy]
-  subgraph t[Test Environment]
-    td-->tft[Functional Test]
+  iut-->id[Deploy]
+  subgraph ie[Integration Environment]
+    id-->ift[Automated Functional Testing]
   end
   cr-->prc[Complete]
-  tft-->prc
+  ift-->prc
 end
 
 prc-->m[Mainstream]
@@ -817,7 +819,7 @@ end
 
 ### 지속 배치(Continuous Deployment)
 
-지속 배치는 단일 통합 지점의 모든 변경을 자동으로 출시한다. 변경된 코드 형상은 빌드되어 아티팩트가 생성되고 아티팩트는 단위 테스트된 후 아티팩트 저장소에 저장된다. 스테이징 환경 배치와 운영 환경 배치에 코드 형상은 다시 빌드되지 않으며 아티팩트 저장소에 저장된 아티팩트가 그대로 사용된다. 스테이징 환경은 내부에서만 접근할 수 있는 운영 환경의 일부다. 스테이징 환경과 운영 환경 배치에는 [Blue-Green 배치](https://docs.aws.amazon.com/whitepapers/latest/overview-deployment-options/bluegreen-deployments.html) 또는 [카나리 배치](https://wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.canary-deployment.en.html) 등의 기법이 사용될 수 있다. 자동화된 테스트 만으로 높은 안정적 작동의 신뢰를 얻을 수 있는 API 응용프로그램에 자주 사용된다.
+지속 배치는 단일 통합 지점의 모든 변경을 자동으로 출시한다. 변경된 코드 형상은 빌드되어 아티팩트가 생성되고 아티팩트는 단위 테스트된 후 아티팩트 저장소에 저장된다. 테스트 환경, 스테이징 환경, 운영 환경에 배치되는 코드 형상은 다시 빌드되지 않으며 아티팩트 저장소에 저장된 아티팩트가 그대로 사용된다. 스테이징 환경은 내부에서만 접근할 수 있는 운영 환경의 일부다. 스테이징 환경과 운영 환경 배치에는 [Blue-Green 배치](https://docs.aws.amazon.com/whitepapers/latest/overview-deployment-options/bluegreen-deployments.html) 또는 [카나리 배치](https://wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.canary-deployment.en.html) 등의 기법이 사용될 수 있다. 자동화된 테스트 만으로 높은 안정적 작동의 신뢰를 얻을 수 있는 API 응용프로그램에 자주 사용된다.
 
 ```mermaid
 flowchart LR
@@ -828,18 +830,22 @@ as[(Artifact Store)]
 mut-.->|Artifact|as
 
 subgraph m[Mainstream]
-  pb-->mut[Unit Test]
-  mut-->sd[Deploy]
+  pb-->mut[Unit Testing]
+  mut-->td[Deploy]
+  subgraph t[Test Environment]
+    td[Deploy]-->tft[Automated Function Testing]
+  end
   subgraph p[Production Environment]
     subgraph s[Staging Environment]
-      direction LR
-      sd-->sft[Functional Test]
+      tft-->sd[Deploy]
+      sd-->sft[Automated Functional Testing]
     end
     sft-->pd[Deploy]
-    pd-->pft[Functional Test]
+    pd-->pft[Automated Functional Testing]
   end
-  as-.->|Artifact|pd
+  as-.->|Artifact|td
   as-.->|Artifact|sd
+  as-.->|Artifact|pd
 end
 
 style s stroke-dasharray: 5 5
@@ -847,7 +853,7 @@ style s stroke-dasharray: 5 5
 
 ### 지속 배달(Continuous Delivery)
 
-지속 배달은 지속 배치와 아주 유사하다. 핵심 차이는 스테이징 환경 검증 이후 운영 환경 배치에 수동 승인 절차가 포함된 점이다. 지속 배달을 사용하면 단일 통합 지점의 모든 변경에 대해 배치 가능한 아티팩트가 준비되지만 이 아티팩트를 고객과의 접점에 배치할 지 여부는 개발팀의 정책에 의해 결정된다. 예를 들어 Product Owner나 QA 엔지니어가 출시를 결정할 수 있다. 자동화된 테스트 만으로는 높은 안정적 작동의 신뢰를 얻을 수 없거나 가치 전달 단위와 코드 변경 단위가 일치하지 않을 때 고객경험을 해칠 수 있는 UI 응용프로그램에 자주 사용된다.
+지속 배달은 지속 배치와 아주 유사하다. 핵심 차이는 수동 승인 절차가 포함된다는 점이다. 지속 배달을 사용하면 단일 통합 지점의 모든 변경에 대해 배치 가능한 아티팩트가 준비되지만 이 아티팩트를 고객과의 접점에 배치할 지 여부는 개발팀의 정책에 의해 결정된다. 예를 들어 Product Owner나 QA 엔지니어가 출시를 결정할 수 있다. 자동화된 테스트 만으로는 높은 안정적 작동의 신뢰를 얻을 수 없거나 가치 전달 단위와 코드 변경 단위가 일치하지 않을 때 고객경험을 해칠 수 있는 UI 응용프로그램에 자주 사용된다. 수동 인증 절차는 테스트 환경이나 스테이징 환경, 또는 둘 다에 적용할 수 있다.
 
 ```mermaid
 flowchart LR
@@ -858,21 +864,32 @@ as[(Artifact Store)]
 mut-.->|Artifact|as
 
 subgraph m[Mainstream]
-  pb-->mut[Unit Test]
-  mut-->sd[Deploy]
+  pb-->mut[Unit Testing]
+  mut-->td[Deploy]
+  subgraph t[Test Environment]
+    td[Deploy]-->taft[Automated Function Testing]
+    td-->tmft[Manual Functional Testing]
+    taft-->ta[Approve]
+    tmft-->ta
+  end
   subgraph p[Production Environment]
     subgraph s[Staging Environment]
       direction LR
-      sd-->sft[Functional Test]
-      sft-->sa[Approve]
+      ta-->sd[Deploy]
+      sd-->saft[Automated Functional Testing]
+      sd-->smft[Manual Functional Testing]
+      saft-->sa[Approve]
+      smft-->sa
     end
     sa-->pd[Deploy]
-    pd-->pt[Functional Test]
+    pd-->paft[Automated Functional Testing]
   end
-  as-.->|Artifact|pd
+  as-.->|Artifact|td
   as-.->|Artifact|sd
+  as-.->|Artifact|pd
 end
 
+style ta fill:#FF0,color:#000
 style sa fill:#FF0,color:#000
 style s stroke-dasharray: 5 5
 ```
