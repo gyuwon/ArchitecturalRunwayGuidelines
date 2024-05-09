@@ -188,7 +188,13 @@ Rel(bc3, bc4, "Sends messages to", "sync")
 Rel(bc1, mh, "Publishes messages to")
 Rel(bc3, mh, "Subscribes")
 
-UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
+UpdateRelStyle(bc1, bc2, $offsetY="-10", $offsetX="5")
+UpdateRelStyle(bc3, bc2, $offsetX="-100")
+UpdateRelStyle(bc1, mh, $offsetY="-15", $offsetX="-60")
+UpdateRelStyle(bc3, mh, $offsetY="-90", $offsetX="20")
+UpdateRelStyle(bc3, bc4, $offsetY="-10", $offsetX="5")
+
+UpdateLayoutConfig($c4ShapeInRow="1", $c4BoundaryInRow="3")
 
 UpdateElementStyle(fs1, $bgColor="lightgrey", $borderColor="grey")
 ```
@@ -220,7 +226,10 @@ Enterprise_Boundary(wb, "System") {
 Rel(bc2, fs1, "Makes API calls to", "HTTP")
 Rel(bc3, fs1, "Makes API calls to", "HTTP")
 
-UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
+UpdateRelStyle(bc2, fs1, $offsetY="-30", $offsetX="-45")
+UpdateRelStyle(bc3, fs1, $offsetY="-35", $offsetX="-80")
+
+UpdateLayoutConfig($c4ShapeInRow="1", $c4BoundaryInRow="3")
 
 UpdateElementStyle(bc1, $bgColor="lightgrey", $borderColor="grey")
 UpdateElementStyle(bc4, $bgColor="lightgrey", $borderColor="grey")
@@ -255,7 +264,11 @@ Rel(bc3, ls3, "Depends on", "HTTP")
 Rel(bc4, ls1, "Depends on", "HTTP")
 Rel(bc4, ls2, "Depends on", "HTTP")
 
-UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="3")
+UpdateRelStyle(bc3, ls3, $offsetY="10", $offsetX="-30")
+UpdateRelStyle(bc4, ls1, $offsetY="-100", $offsetX="-40")
+UpdateRelStyle(bc4, ls2, $offsetY="-80", $offsetX="-40")
+
+UpdateLayoutConfig($c4ShapeInRow="1", $c4BoundaryInRow="3")
 
 UpdateElementStyle(bc1, $bgColor="lightgrey", $borderColor="grey")
 UpdateElementStyle(bc2, $bgColor="lightgrey", $borderColor="grey")
