@@ -506,7 +506,7 @@ root/
 ┃ ┃   ┣ infrastructure/
 ┃ ┃   ┣ processor/
 ┃ ┃   ┗ unit-tests/
-┃ ┣ gateway/
+┃ ┣ gateways/
 ┃ ┃ ┣ administration-bff/
 ┃ ┃ ┃ ┣ api/
 ┃ ┃ ┃ ┣ infrastructure/
