@@ -6,3 +6,11 @@ include(
     "gateways:administration-bff:api",
     "gateways:administration-bff:unit-tests"
 )
+
+include(
+    "domain-model:identity:contracts",
+    "domain-model:identity:model",
+    "domain-model:identity:adapters",
+    "domain-model:identity:api",
+    "domain-model:identity:unit-tests"
+)
