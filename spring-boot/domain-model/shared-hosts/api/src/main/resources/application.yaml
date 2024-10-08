@@ -1,5 +1,5 @@
 server:
-  port: 31000
+  port: 30000
 
 spring:
   datasource:
@@ -10,8 +10,5 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    properties:
-      hibernate:
-        default_schema: identity
     generate-ddl: false
     open-in-view: false

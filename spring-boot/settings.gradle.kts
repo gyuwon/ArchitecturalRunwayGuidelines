@@ -14,3 +14,15 @@ include(
     "domain-model:identity:api",
     "domain-model:identity:unit-tests"
 )
+
+include(
+    "domain-model:inventory:contracts",
+    "domain-model:inventory:model",
+    "domain-model:inventory:adapters",
+    "domain-model:inventory:unit-tests"
+)
+
+include(
+    "domain-model:shared-hosts:api",
+    "domain-model:shared-hosts:unit-tests"
+)
