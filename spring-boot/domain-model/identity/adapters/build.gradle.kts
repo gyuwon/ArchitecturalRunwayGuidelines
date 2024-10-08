@@ -1,4 +1,5 @@
 import org.springframework.boot.gradle.tasks.bundling.BootJar
+import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
     `java-library`
@@ -19,8 +20,13 @@ repositories {
 dependencies {
     api(project(":domain-model:identity:model"))
     api("org.springframework.boot:spring-boot-starter-data-jpa")
+    runtimeOnly("org.postgresql:postgresql")
 }
 
 tasks.named<BootJar>("bootJar") {
+    enabled = false
+}
+
+tasks.named<BootRun>("bootRun") {
     enabled = false
 }

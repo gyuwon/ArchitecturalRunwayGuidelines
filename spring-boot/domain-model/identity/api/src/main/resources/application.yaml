@@ -1,2 +1,17 @@
 server:
   port: 30001
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/commerce
+    username: postgres
+    password: mysecretpassword
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: identity
+    generate-ddl: false
+    open-in-view: false
