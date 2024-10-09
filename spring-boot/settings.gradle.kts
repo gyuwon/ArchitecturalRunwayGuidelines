@@ -23,6 +23,14 @@ include(
 )
 
 include(
+    "domain-model:orders:contracts",
+    "domain-model:orders:command-model",
+    "domain-model:orders:query-model",
+    "domain-model:orders:adapters",
+    "domain-model:orders:unit-tests"
+)
+
+include(
     "domain-model:shared-hosts:api",
     "domain-model:shared-hosts:unit-tests"
 )

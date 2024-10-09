@@ -17,13 +17,9 @@ repositories {
 }
 
 dependencies {
-    testImplementation(project(":domain-model:inventory:model"))
-    testImplementation(project(":domain-model:inventory:adapters"))
     testImplementation(project(":domain-model:orders:command-model"))
     testImplementation(project(":domain-model:orders:query-model"))
     testImplementation(project(":domain-model:orders:adapters"))
-    testImplementation(project(":domain-model:shared-hosts:api"))
-    testImplementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("com.h2database:h2")

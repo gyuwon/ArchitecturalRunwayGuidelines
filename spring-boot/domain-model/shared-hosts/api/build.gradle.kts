@@ -17,5 +17,8 @@ repositories {
 dependencies {
     implementation(project(":domain-model:inventory:model"))
     implementation(project(":domain-model:inventory:adapters"))
+    implementation(project(":domain-model:orders:command-model"))
+    implementation(project(":domain-model:orders:query-model"))
+    implementation(project(":domain-model:orders:adapters"))
     implementation("org.springframework.boot:spring-boot-starter-web")
 }
