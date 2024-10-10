@@ -20,8 +20,10 @@ repositories {
 
 dependencies {
     testImplementation(project(":gateways:seller-bff:api"))
+    testImplementation(project(":domain-model:identity:api"))
     testImplementation("org.springframework.cloud:spring-cloud-starter-gateway")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testRuntimeOnly("com.h2database:h2")
 }
 
 dependencyManagement {
